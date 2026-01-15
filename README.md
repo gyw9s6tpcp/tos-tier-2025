@@ -2,7 +2,7 @@
 
 
 活動網站：
-https://github.com/gyw9s6tpcp/tos-tier-2025
+[https://github.com/gyw9s6tpcp/tos-tier-2025](https://gyw9s6tpcp.github.io/tos-tier-2025/)
 
 ．點擊召喚獸縮圖進行排序，
 
