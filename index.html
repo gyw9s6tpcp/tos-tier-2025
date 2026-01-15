@@ -35,6 +35,12 @@
 
     <div class="max-w-5xl mx-auto">
         <header class="text-center mb-10">
+            <img 
+                src="./images/cb9a256a104b0b80c7f6864c.png"
+                alt="2025 石抽卡 Tier"
+                class="w-full max-w-5xl mx-auto rounded-2xl shadow-2xl mb-6 border border-gray-700"
+            >
+
             <h1 class="text-4xl font-bold text-yellow-500">2025 石抽卡 Tier</h1>
             <p class="text-gray-400 mt-2"></p>
         </header>
@@ -75,13 +81,12 @@
 
         <div class="mt-10 bg-gray-800 p-6 rounded-lg border border-gray-700">
             <h2 class="text-xl font-bold text-yellow-500 mb-4">2025 年石抽卡</h2>
-            <div id="pool" class="tier-row flex flex-wrap gap-2 min-h-[150px]" onclick="handleRowClick(this, true)">
-                </div>
+            <div id="pool" class="tier-row flex flex-wrap gap-2 min-h-[150px]" onclick="handleRowClick(this, true)"></div>
+					  
         </div>
     </div>
 
     <script>
-        // 設定您的圖片編號清單
         const imageIds = [
             "10828","10841","10842","10852","10853","10854","10857","10872","10862","10874",
             "10875","10891","10892","10895","10896","10898","10899","10916","10919","10931",
@@ -90,7 +95,7 @@
             "10993","11015","2941","2942","2943","2944","2945","11027","11028","11029",
             "11031","11043","11044","11036","11045","11053","11055","11070","11071","11072",
             "11076","11090","11091"
-        ];
+        ];	  
 
         let selectedElement = null;
 
@@ -166,10 +171,10 @@
         function downloadList() {
             if (selectedElement) selectedElement.classList.remove('selected-item');
             const area = document.getElementById('capture-area');
-            html2canvas(area, { 
-                scale: 2,
-                backgroundColor: "#000000"
-            }).then(canvas => {
+								
+						 
+            html2canvas(area, { scale: 2, backgroundColor: "#000000" }).then(canvas => {
+							   
                 const link = document.createElement('a');
                 link.download = 'tos-tier-2025.png';
                 link.href = canvas.toDataURL();
