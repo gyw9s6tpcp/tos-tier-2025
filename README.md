@@ -4,5 +4,7 @@
 https://github.com/gyw9s6tpcp/tos-tier-2025
 
 點擊召喚獸縮圖進行排序，
+
 等階依序為Ｓ、Ａ、Ｂ、Ｃ及Ｄ
+
 （反正就是強到爛或是什麼T0-T3的）
