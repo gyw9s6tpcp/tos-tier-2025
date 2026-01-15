@@ -16,7 +16,7 @@
             transition: all 0.2s; 
             user-select: none;
         }
-        
+        /* 選取卡片時的發光效果 */
         .selected-item { 
             outline: 4px solid #facc15; 
             box-shadow: 0 0 20px #facc15; 
@@ -25,9 +25,9 @@
             position: relative;
         }
 
-        .character-item:active {
-            transform: scale(0.95);
-        }
+								
+								   
+		 
 
         #comment-box {
             resize: none;
@@ -41,7 +41,7 @@
     <div class="max-w-5xl mx-auto">
         <header class="text-center mb-10">
             <h1 class="text-4xl font-bold text-yellow-500">2025 石抽卡 Tier</h1>
-            <p class="text-gray-400 mt-2 text-lg">操作方式：點擊「卡片」選取 ➔ 點擊「目標區域」放置</p>
+            <p class="text-gray-400 mt-2">操作方式：點擊「卡片」選取 ➔ 點擊「目標區域」放置</p>
         </header>
 
         <div class="mb-6 flex gap-4 justify-center">
@@ -77,14 +77,14 @@
                 <h3 class="text-yellow-500 font-bold mb-2">評論與心得：</h3>
                 <textarea id="comment-box" 
                     class="w-full bg-black text-gray-200 p-3 border border-gray-600 rounded focus:border-yellow-500 focus:outline-none transition" 
-                    placeholder="對於2025 石抽卡有什麼想法，隨便寫也可以..."
+                    placeholder="在此寫下您的心得..."
                     oninput="autoResize(this); saveToLocalStorage();"></textarea>
             </div>
         </div>
 
         <div class="mt-10 bg-gray-800 p-6 rounded-lg border border-gray-700">
             <div class="flex justify-between items-center mb-4 border-b border-gray-700 pb-2">
-                <h2 class="text-xl font-bold text-yellow-500">2025 石抽卡（含解放/融煉）</h2>
+                <h2 class="text-xl font-bold text-yellow-500">2025 石抽卡候選區</h2>
                 <span class="text-xs text-gray-400">點擊此區域可放回卡片</span>
             </div>
             <div id="pool" class="tier-row flex flex-wrap gap-2 min-h-[150px]" onclick="handleRowClick(this, true)">
@@ -158,22 +158,27 @@
     <script>
         let selectedElement = null;
 
+        // 強制處理圖片 CORS 問題並繞過快取
         function fixImageCORS() {
             const images = document.querySelectorAll('img');
             images.forEach(img => {
-                if (!img.src.includes('cors_fixed=')) {
-                    const originalSrc = img.src;
+                const currentSrc = img.src;
+                // 如果 src 還沒加上 nocache，才進行處理
+                if (!currentSrc.includes('nocache=')) {
+												
                     img.setAttribute('crossorigin', 'anonymous');
-                    const separator = originalSrc.includes('?') ? '&' : '?';
-                    img.src = originalSrc + separator + 'cors_fixed=' + new Date().getTime();
+                    const separator = currentSrc.includes('?') ? '&' : '?';
+                    // 加上時間戳，確保瀏覽器請求全新的授權版本
+                    img.src = currentSrc + separator + 'nocache=' + new Date().getTime();
                 }
             });
         }
 
+        // 卡片點擊選取邏輯
         function handleItemClick(event, element) {
             event.stopPropagation();
 
-	  
+   
             if (selectedElement && selectedElement !== element) {
                 selectedElement.classList.remove('selected-item');
             }
@@ -188,11 +193,11 @@
             }
         }
 
-	
+        // 放置卡片邏輯
         function handleRowClick(container, isPool = false) {
             if (!selectedElement) return;
 
-	
+ 
             const targetRow = isPool ? container : container.querySelector('.tier-row');
    
             if (targetRow) {
@@ -208,22 +213,23 @@
             textarea.style.height = textarea.scrollHeight + 'px';
         }
 
-        // --- 儲存與讀取 ---
+        // 儲存至本地瀏覽器
         function saveToLocalStorage() {
             const tierData = document.getElementById('tier-container').innerHTML;
             const poolData = document.getElementById('pool').innerHTML;
             const commentData = document.getElementById('comment-box').value;
-            
-            localStorage.setItem('tosTierFinal_Tiers', tierData);
-            localStorage.setItem('tosTierFinal_Pool', poolData);
-            localStorage.setItem('tosTierFinal_Comment', commentData);
+			
+            localStorage.setItem('tosTierV4', tierData);
+            localStorage.setItem('tosPoolV4', poolData);
+            localStorage.setItem('tosCommentV4', commentData);
         }
 
+        // 載入儲存的數據
         function loadFromLocalStorage() {
-            const savedTiers = localStorage.getItem('tosTierFinal_Tiers');
-            const savedPool = localStorage.getItem('tosTierFinal_Pool');
-            const savedComment = localStorage.getItem('tosTierFinal_Comment');
-            
+            const savedTiers = localStorage.getItem('tosTierV4');
+            const savedPool = localStorage.getItem('tosPoolV4');
+            const savedComment = localStorage.getItem('tosCommentV4');
+			
             if (savedTiers) document.getElementById('tier-container').innerHTML = savedTiers;
             if (savedPool) document.getElementById('pool').innerHTML = savedPool;
             if (savedComment) {
@@ -231,16 +237,23 @@
                 cb.value = savedComment;
                 autoResize(cb);
             }
+            // 載入後立即修復圖片授權問題
             fixImageCORS();
         }
 
+        // 下載圖片邏輯
         async function downloadList() {
             if (selectedElement) selectedElement.classList.remove('selected-item');
             const area = document.getElementById('capture-area');
+
+            // 確保所有區域內的圖片都載入完成再擷取
             const imgs = area.querySelectorAll('img');
             const promises = Array.from(imgs).map(img => {
                 if (img.complete) return Promise.resolve();
-                return new Promise(res => { img.onload = res; img.onerror = res; });
+                return new Promise(resolve => {
+                    img.onload = resolve;
+                    img.onerror = resolve;
+                });
             });
             await Promise.all(promises);
 
@@ -248,8 +261,8 @@
                 useCORS: true,
                 allowTaint: false,
                 backgroundColor: "#000000",
-                scale: 2 
-								 
+                scale: 2 // 提升清晰度
+		 
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = '2025-TOS-TierList.png';
@@ -258,19 +271,20 @@
             });
         }
 
+        // 重置數據
         function resetList() {
-            if(confirm('確定要完全重置數據嗎？')) {
+            if(confirm('確定要清空並重置所有數據嗎？')) {
                 localStorage.clear();
-														 
-														
+			   
+			  
                 location.reload();
             }
         }
 
-							   
-        window.onload = loadFromLocalStorage;
-						 
 		  
+        window.onload = loadFromLocalStorage;
+	   
+	
     </script>
 </body>
 </html>
