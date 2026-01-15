@@ -1,10 +1,15 @@
-<img width="1360" height="765" alt="cb9a256a104b0b80c7f6864c" src="https://github.com/user-attachments/assets/13c63db4-51d8-4313-900d-d4ef3716b06b" />
+<img width="1360" height="765" alt="cb9a256a104b0b80c7f6864c" src="https://github.com/user-attachments/assets/d3844c0a-0f67-4cc5-84e9-8d71d3f741b2" />
+
 
 活動網站：
 https://github.com/gyw9s6tpcp/tos-tier-2025
 
-點擊召喚獸縮圖進行排序，
+．點擊召喚獸縮圖進行排序，
 
 等階依序為Ｓ、Ａ、Ｂ、Ｃ及Ｄ
 
 （反正就是強到爛或是什麼T0-T3的）
+
+．召喚獸範圍為2025石抽卡（解放/熔煉）
+
+*全齊獎也算
