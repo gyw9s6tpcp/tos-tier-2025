@@ -118,7 +118,6 @@
             });
         }
 
-        // 統一建立圖片元件與綁定事件
         function createCharacterImg(src) {
             const img = document.createElement('img');
             img.src = src;
@@ -149,7 +148,6 @@
 					   
         }
 
-        // 拖曳進入容器
         function allowDrop(e) {
             e.preventDefault();
 											  
@@ -225,13 +223,7 @@
             }
 
             document.querySelectorAll('.character-item').forEach(img => {
-                bindImageEvents(img);
-										  
-										 
-												  
-				  
-																		
-															 
+                bindImageEvents(img);				 
             });
         }
 
@@ -239,7 +231,6 @@
             if (selectedElement) selectedElement.classList.remove('selected-item');
             const area = document.getElementById('capture-area');
   
-	
             html2canvas(area, { scale: 2, backgroundColor: "#000000" }).then(canvas => {
 	
                 const link = document.createElement('a');
