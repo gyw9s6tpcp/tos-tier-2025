@@ -1,4 +1,5 @@
-<img width="1360" height="765" alt="cb9a256a104b0b80c7f6864c" src="https://github.com/user-attachments/assets/d3844c0a-0f67-4cc5-84e9-8d71d3f741b2" />
+<img width="1360" height="765" alt="cb9a256a104b0b80c7f6864c" src="https://github.com/user-attachments/assets/227a21d4-6a40-4e56-83df-afac008d3e25" />
+
 
 
 活動網站：
@@ -13,3 +14,5 @@ https://gyw9s6tpcp.github.io/tos-tier-2025/
 ．召喚獸範圍為2025石抽卡（解放/熔煉）
 
 *全齊獎也算
+
+[2026/01/06 09:45 優化拖曳功能及錯誤修正]
