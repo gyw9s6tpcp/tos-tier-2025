@@ -8,8 +8,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         .tier-row { min-height: 80px; transition: background 0.2s; }
+        .dragging { opacity: 0.5; transform: scale(0.9); }
+        .drag-over { background-color: rgba(255, 255, 255, 0.1) !important; }
+        
         .character-item { 
-            cursor: pointer; 
+            cursor: grab; 
             width: 64px; 
             height: 64px; 
             object-fit: cover; 
@@ -17,6 +20,7 @@
             user-select: none;
             border-radius: 4px;
         }
+        .character-item:active { cursor: grabbing; }
         .selected-item { 
             outline: 4px solid #facc15; 
             box-shadow: 0 0 20px #facc15; 
@@ -35,14 +39,14 @@
 
     <div class="max-w-5xl mx-auto">
         <header class="text-center mb-10">
-            <img 
-                src="./images/cb9a256a104b0b80c7f6864c.png"
-                alt="2025 石抽卡 Tier"
-                class="w-full max-w-5xl mx-auto rounded-2xl shadow-2xl mb-6 border border-gray-700"
-            >
+				 
+														   
+										 
+            <img src="./images/cb9a256a104b0b80c7f6864c.png" alt="2025 石抽卡 Tier" class="w-full max-w-5xl mx-auto rounded-2xl shadow-2xl mb-6 border border-gray-700">
+			 
 
             <h1 class="text-4xl font-bold text-yellow-500">2025 石抽卡 Tier</h1>
-            <p class="text-gray-400 mt-2"></p>
+											  
         </header>
 
         <div class="mb-6 flex gap-4 justify-center">
@@ -52,23 +56,23 @@
 
         <div id="capture-area" class="bg-black p-4 border-2 border-gray-700 shadow-2xl">
             <div id="tier-container" class="flex flex-col gap-1">
-                <div class="flex border-b border-gray-800 row-container" onclick="handleRowClick(this)">
+                <div class="flex border-b border-gray-800 row-container" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="removeDragOver(event)" onclick="handleRowClick(this)">
                     <div class="w-24 flex items-center justify-center bg-red-500 text-black font-black text-2xl px-2">S</div>
                     <div class="tier-row flex-1 p-2 flex flex-wrap gap-2 bg-gray-800"></div>
                 </div>
-                <div class="flex border-b border-gray-800 row-container" onclick="handleRowClick(this)">
+                <div class="flex border-b border-gray-800 row-container" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="removeDragOver(event)" onclick="handleRowClick(this)">
                     <div class="w-24 flex items-center justify-center bg-orange-400 text-black font-black text-2xl px-2">A</div>
                     <div class="tier-row flex-1 p-2 flex flex-wrap gap-2 bg-gray-800"></div>
                 </div>
-                <div class="flex border-b border-gray-800 row-container" onclick="handleRowClick(this)">
+                <div class="flex border-b border-gray-800 row-container" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="removeDragOver(event)" onclick="handleRowClick(this)">
                     <div class="w-24 flex items-center justify-center bg-yellow-300 text-black font-black text-2xl px-2">B</div>
                     <div class="tier-row flex-1 p-2 flex flex-wrap gap-2 bg-gray-800"></div>
                 </div>
-                <div class="flex border-b border-gray-800 row-container" onclick="handleRowClick(this)">
+                <div class="flex border-b border-gray-800 row-container" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="removeDragOver(event)" onclick="handleRowClick(this)">
                     <div class="w-24 flex items-center justify-center bg-green-400 text-black font-black text-2xl px-2">C</div>
                     <div class="tier-row flex-1 p-2 flex flex-wrap gap-2 bg-gray-800"></div>
                 </div>
-                <div class="flex border-b border-gray-800 row-container" onclick="handleRowClick(this)">
+                <div class="flex border-b border-gray-800 row-container" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="removeDragOver(event)" onclick="handleRowClick(this)">
                     <div class="w-24 flex items-center justify-center bg-blue-400 text-black font-black text-2xl px-2">D</div>
                     <div class="tier-row flex-1 p-2 flex flex-wrap gap-2 bg-gray-800"></div>
                 </div>
@@ -81,35 +85,74 @@
 
         <div class="mt-10 bg-gray-800 p-6 rounded-lg border border-gray-700">
             <h2 class="text-xl font-bold text-yellow-500 mb-4">2025 年石抽卡</h2>
-            <div id="pool" class="tier-row flex flex-wrap gap-2 min-h-[150px]" onclick="handleRowClick(this, true)"></div>
-					  
+            <div id="pool" class="tier-row flex flex-wrap gap-2 min-h-[150px]" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="removeDragOver(event)" onclick="handleRowClick(this, true)"></div>
+	   
         </div>
     </div>
 
     <script>
-        const imageIds = [
-            "10828","10829","10841","10842","10852","10853","10854","10857","10872","10862","10874",
-            "10875","10891","10892","10895","10896","10898","10899","10916","10919","10931",
-            "10932","10936","10938","10939","10942","10948","2931","2932","2933","10950",
-            "10953","10967","10968","10970","10972","10973","10980","10981","10982","10992",
-            "10993","11015","2941","2942","2943","2944","2945","11027","11028","11029",
-            "11031","11043","11044","11036","11045","11053","11055","11070","11071","11072",
-            "11076","11090","11091"
-        ];	  
+        const imageIds = ["10828","10829","10841","10842","10852","10853","10854","10857","10872","10862","10874","10875","10891","10892","10895","10896","10898","10899","10916","10919","10931","10932","10935","10936","10938","10939","10942","10948","2931","2932","2933","10950","10953","10967","10968","10970","10972","10973","10980","10981","10982","10992","10993","11015","2941","2942","2943","2944","2945","11027","11028","11029","11031","11043","11044","11036","11045","11053","11055","11070","11071","11072","11076","11090","11091"];	  
+																															   
 
+        let draggedElement = null;
         let selectedElement = null;
-
 
         function initPool() {
             const pool = document.getElementById('pool');
             pool.innerHTML = '';
             imageIds.forEach(id => {
-                const img = document.createElement('img');
-                img.src = `images/${id}.jpg`;
-                img.className = 'character-item shadow-md';
-                img.onclick = (e) => handleItemClick(e, img);
+                const img = createCharacterImg(id);
+											 
+														   
+															 
                 pool.appendChild(img);
             });
+        }
+
+        function createCharacterImg(id) {
+            const img = document.createElement('img');
+            img.src = `images/${id}.jpg`;
+            img.className = 'character-item shadow-md';
+            img.draggable = true;
+            
+            img.ondragstart = (e) => {
+                draggedElement = img;
+                img.classList.add('dragging');
+                if (selectedElement) {
+                    selectedElement.classList.remove('selected-item');
+                    selectedElement = null;
+                }
+            };
+            
+            img.ondragend = (e) => {
+                img.classList.remove('dragging');
+            };
+
+            img.onclick = (e) => handleItemClick(e, img);
+            return img;
+        }
+
+        function allowDrop(e) {
+            e.preventDefault();
+            const container = e.currentTarget;
+            container.classList.add('drag-over');
+        }
+
+        function removeDragOver(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            const container = e.currentTarget;
+            container.classList.remove('drag-over');
+            
+            const targetRow = container.classList.contains('tier-row') ? container : container.querySelector('.tier-row');
+            
+            if (draggedElement && targetRow) {
+                targetRow.appendChild(draggedElement);
+                saveToLocalStorage();
+            }
         }
 
         function handleItemClick(event, element) {
@@ -164,6 +207,12 @@
             }
 
             document.querySelectorAll('.character-item').forEach(img => {
+                img.draggable = true;
+                img.ondragstart = (e) => {
+                    draggedElement = img;
+                    img.classList.add('dragging');
+                };
+                img.ondragend = (e) => img.classList.remove('dragging');
                 img.onclick = (e) => handleItemClick(e, img);
             });
         }
@@ -171,10 +220,10 @@
         function downloadList() {
             if (selectedElement) selectedElement.classList.remove('selected-item');
             const area = document.getElementById('capture-area');
-								
-						 
+		
+	   
             html2canvas(area, { scale: 2, backgroundColor: "#000000" }).then(canvas => {
-							   
+		  
                 const link = document.createElement('a');
                 link.download = 'tos-tier-2025.png';
                 link.href = canvas.toDataURL();
